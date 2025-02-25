@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Catch the Ball</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; background: #f0f0f0; }
+        canvas { border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <canvas id="game" width="300" height="300"></canvas>
+    <script>
+        const canvas = document.getElementById("game");
+        const ctx = canvas.getContext("2d");
+        let ballX = 50, ballY = 50;
+        let dx = 2;
+        let playerX = 150;
+        let score = 0;
+
+        function drawBall() {
+            ctx.beginPath();
+            ctx.arc(ballX, ballY, 20, 0, 2 * Math.PI);
+            ctx.fillStyle = "red";
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function drawPlayer() {
+            ctx.fillStyle = "blue";
+            ctx.fillRect(playerX - 25, 280, 50, 10);
+        }
+
+        function update() {
+            ctx.clearRect(0, 0, 300, 300);
+            drawBall();
+            drawPlayer();
+
+            ballX += dx;
+            if (ballX > 280 || ballX < 20) dx = -dx;
+
+            // Проверка столкновения
+            if (ballY > 260 && ballY < 280 && ballX > playerX - 25 && ballX < playerX + 25) {
+                score++;
+                ballY = 50;
+                ballX = Math.random() * 260 + 20;
+                Telegram.WebApp.showAlert(`Score: ${score}`);
+            }
+            if (ballY > 300) {
+                ballY = 50;
+                ballX = Math.random() * 260 + 20;
+            }
+            ballY += 2;
+
+            requestAnimationFrame(update);
+        }
+
+        canvas.addEventListener("mousemove", (e) => {
+            const rect = canvas.getBoundingClientRect();
+            playerX = e.clientX - rect.left;
+            if (playerX < 25) playerX = 25;
+            if (playerX > 275) playerX = 275;
+        });
+
+        Telegram.WebApp.ready();
+        Telegram.WebApp.expand();
+        update();
+    </script>
+</body>
+</html>
