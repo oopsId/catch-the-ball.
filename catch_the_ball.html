@@ -7,9 +7,13 @@
         body {
             margin: 0;
             overflow: hidden;
+            font-family: 'Georgia', serif;
+            color: #B71C1C;
+            background: #FFCDD2;
         }
         #game {
-            border: 4px solid #2c6e9d;
+            border: 4px solid transparent;
+            border-image: linear-gradient(to bottom right, #D32F2F, #F06292) 1;
             border-radius: 15px;
             padding: 5px;
             touch-action: none;
@@ -18,6 +22,9 @@
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 2;
+            box-shadow: 0 0 15px rgba(240, 98, 146, 0.7), 0 4px 20px rgba(0, 0, 0, 0.2);
+            background: #FFFFFF;
+            -webkit-box-reflect: below 5px linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.1));
         }
         #parallax-bg {
             position: fixed;
@@ -25,109 +32,242 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, #0f0c29, #302b63, #24243e);
+            background: linear-gradient(135deg, #FFCDD2, #FFFFFF);
             background-size: 200% 200%;
             z-index: 1;
             transition: transform 0.1s ease;
+        }
+        #parallax-clouds {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        #top-bar, #bottom-bar {
+            position: fixed;
+            width: 100%;
+            background: linear-gradient(to right, #FFEBEE, #FCE4EC);
+            padding: 10px;
+            text-align: center;
+            z-index: 3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-shadow: 0 0 3px #F06292;
+            box-shadow: 0 2px 10px rgba(240, 98, 146, 0.3);
+        }
+        #top-bar {
+            top: 0;
+        }
+        #bottom-bar {
+            bottom: 0;
+        }
+        #message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(240, 98, 146, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            color: #fff;
+            z-index: 4;
+            display: none;
+            box-shadow: 0 0 10px #D32F2F;
+            font-style: italic;
+            animation: fadeInOut 3s ease-in-out;
+        }
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translate(-50%, -60%); }
+            10% { opacity: 1; transform: translate(-50%, -50%); }
+            90% { opacity: 1; transform: translate(-50%, -50%); }
+            100% { opacity: 0; transform: translate(-50%, -40%); }
+        }
+        .heart {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23EC407A"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center;
+            background-size: contain;
+            margin: 0 5px;
+            filter: drop-shadow(0 0 2px #FFFFFF);
+        }
+        .heart.lost {
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23D3D3D3"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center;
+            background-size: contain;
+            filter: none;
+        }
+        #amour-toggle {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 4;
+            background: linear-gradient(to bottom, #D32F2F, #F06292);
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 0 5px #F06292;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        #decor-top-left, #decor-top-right, #decor-bottom-left, #decor-bottom-right {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23D32F2F"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center;
+            background-size: 30px;
+            z-index: 3;
+            filter: drop-shadow(0 0 5px #F06292);
+            animation: heartbeat 1.5s infinite;
+        }
+        #decor-top-left { top: -20px; left: -20px; }
+        #decor-top-right { top: -20px; right: -20px; }
+        #decor-bottom-left { bottom: -20px; left: -20px; }
+        #decor-bottom-right { bottom: -20px; right: -20px; }
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            20% { transform: scale(1.1); }
+            40% { transform: scale(1); }
+            60% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
     </style>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
 <div id="parallax-bg"></div>
+<canvas id="parallax-clouds" width="800" height="600"></canvas>
+<div id="top-bar">
+    Очки: <span id="score">0</span>
+    <span id="lives">
+        <span class="heart"></span>
+        <span class="heart"></span>
+        <span class="heart"></span>
+        <span class="heart"></span>
+        <span class="heart"></span>
+    </span>
+</div>
 <canvas id="game" width="400" height="400"></canvas>
+<div id="bottom-bar">Время: <span id="time">00:00</span></div>
+<div id="message"></div>
+<button id="amour-toggle">Амур: Только палец</button>
+<div id="decor-top-left"></div>
+<div id="decor-top-right"></div>
+<div id="decor-bottom-left"></div>
+<div id="decor-bottom-right"></div>
 <script>
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 const parallaxBg = document.getElementById("parallax-bg");
+const cloudsCanvas = document.getElementById("parallax-clouds");
+const cloudsCtx = cloudsCanvas.getContext("2d");
+const scoreDisplay = document.getElementById("score");
+const livesDisplay = document.getElementById("lives").children;
+const timeDisplay = document.getElementById("time");
+const messageBox = document.getElementById("message");
+const amourToggle = document.getElementById("amour-toggle");
+
+// Двойная буферизация
+const bufferCanvas = document.createElement("canvas");
+bufferCanvas.width = canvas.width;
+bufferCanvas.height = canvas.height;
+const bufferCtx = bufferCanvas.getContext("2d");
 
 // Переменные для шарика
-let x = canvas.width / 2, y = 50;
-let ballRadius = 20;
-let dx = (Math.random() > 0.5 ? 1 : -1) * (4 + Math.random() * 4);
-let dy = 4 + Math.random() * 4;
+let balls = [{ x: canvas.width / 2, y: 50, dx: (Math.random() > 0.5 ? 1 : -1) * (2 + Math.random() * 2), dy: 2 + Math.random() * 2 }];
+let ballRadius = 30;
 
 // Переменные для ракетки
 let paddleWidth = 80;
 let paddleHeight = 10;
 let paddleX = (canvas.width - paddleWidth) / 2;
 
-// Переменные для анимации
+// Переменные для игры
 let time = 0;
+let score = 0;
+let lives = 5;
+let gameTime = 0;
+let lastMessageTime = 0;
+let useGyro = true;
 
-// Функция для фрактала Мандельброта
-function drawMandelbrot() {
-    const width = canvas.width;
-    const height = canvas.height;
-    const maxIter = 100;
-    const zoom = 150 + Math.sin(time * 0.01) * 20;
-    const offsetX = -0.7;
-    const offsetY = 0;
+// Система частиц для лепестков
+let particles = [];
+function createParticle() {
+    return {
+        x: Math.random() * canvas.width,
+        y: -10,
+        vx: (Math.random() - 0.5) * 1,
+        vy: 1 + Math.random() * 1.5,
+        size: 5 + Math.random() * 3,
+        angle: Math.random() * Math.PI * 2,
+        spin: (Math.random() - 0.5) * 0.05,
+        life: 1.0,
+        color: Math.random() > 0.5 ? "#D32F2F" : "#FFF9E6"
+    };
+}
 
-    const imageData = ctx.createImageData(width, height);
-    const data = imageData.data;
+function updateParticles() {
+    if (Math.random() < 0.2) {
+        particles.push(createParticle());
+    }
 
-    for (let px = 0; px < width; px++) {
-        for (let py = 0; py < height; py++) {
-            const x0 = (px - width / 2) / zoom + offsetX;
-            const y0 = (py - height / 2) / zoom + offsetY;
-            let x = 0, y = 0;
-            let iter = 0;
+    for (let i = particles.length - 1; i >= 0; i--) {
+        let p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.angle += p.spin;
+        p.life -= 0.008;
 
-            while (x * x + y * y <= 4 && iter < maxIter) {
-                const xtemp = x * x - y * y + x0;
-                y = 2 * x * y + y0;
-                x = xtemp;
-                iter++;
-            }
-
-            const i = (py * width + px) * 4;
-            if (iter === maxIter) {
-                data[i] = 0;
-                data[i + 1] = 0;
-                data[i + 2] = 0;
-            } else {
-                const hue = (iter + Math.sin(time * 0.01) * 10) % 360;
-                const saturation = 100;
-                const lightness = 50 + iter % 50;
-                const [r, g, b] = hslToRgb(hue, saturation, lightness);
-                data[i] = r;
-                data[i + 1] = g;
-                data[i + 2] = b;
-            }
-            data[i + 3] = 180;
+        if (p.y > canvas.height + 20 || p.life <= 0) {
+            particles.splice(i, 1);
         }
     }
-    ctx.putImageData(imageData, 0, 0);
 }
 
-// Конвертация HSL в RGB
-function hslToRgb(h, s, l) {
-    s /= 100;
-    l /= 100;
-    const k = n => (n + h / 30) % 12;
-    const a = s * Math.min(l, 1 - l);
-    const f = n => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
-    return [Math.round(f(0) * 255), Math.round(f(8) * 255), Math.round(f(4) * 255)];
-}
-
-// Эффект пламени
-function drawFlame() {
-    const flamePulse = Math.sin(time * 0.05);
-    if (Math.random() < 0.1) {
-        const flameX = Math.random() * canvas.width;
-        const flameY = canvas.height * 0.8 + Math.random() * canvas.height * 0.2;
-        const gradient = ctx.createRadialGradient(flameX, flameY, 0, flameX, flameY, 30);
-        gradient.addColorStop(0, `rgba(255, 150, 0, ${0.5 + flamePulse * 0.2})`);
-        gradient.addColorStop(1, "rgba(255, 50, 0, 0)");
-        ctx.fillStyle = gradient;
+function drawParticles(ctx) {
+    updateParticles();
+    for (let p of particles) {
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.angle);
+        ctx.globalAlpha = p.life;
+        ctx.fillStyle = p.color;
         ctx.beginPath();
-        ctx.arc(flameX, flameY, 30, 0, 2 * Math.PI);
+        ctx.ellipse(0, 0, p.size, p.size * 1.5, 0, 0, 2 * Math.PI);
         ctx.fill();
+        ctx.restore();
     }
+    ctx.globalAlpha = 1.0;
 }
 
-// Управление ракеткой через мышь
+// Параллакс с облаками
+let cloudOffset = 0;
+function drawClouds() {
+    cloudsCtx.clearRect(0, 0, cloudsCanvas.width, cloudsCanvas.height);
+
+    cloudsCtx.fillStyle = "rgba(255, 255, 255, 0.7)";
+    for (let i = 0; i < 10; i++) {
+        const x = (i * 150 + cloudOffset) % cloudsCanvas.width;
+        const y = 80 + (i % 3) * 50;
+        cloudsCtx.beginPath();
+        cloudsCtx.arc(x, y, 30, 0, 2 * Math.PI);
+        cloudsCtx.arc(x + 20, y - 10, 20, 0, 2 * Math.PI);
+        cloudsCtx.arc(x + 40, y, 25, 0, 2 * Math.PI);
+        cloudsCtx.fill();
+    }
+    cloudOffset += 0.5;
+}
+
+// Управление ракеткой
 canvas.addEventListener("mousemove", (e) => {
     const rect = canvas.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
@@ -136,7 +276,6 @@ canvas.addEventListener("mousemove", (e) => {
     if (paddleX + paddleWidth > canvas.width) paddleX = canvas.width - paddleWidth;
 });
 
-// Управление ракеткой через сенсор
 canvas.addEventListener("touchmove", (e) => {
     e.preventDefault();
     const rect = canvas.getBoundingClientRect();
@@ -146,15 +285,21 @@ canvas.addEventListener("touchmove", (e) => {
     if (paddleX + paddleWidth > canvas.width) paddleX = canvas.width - paddleWidth;
 });
 
-// Управление ракеткой через гироскоп
 window.addEventListener("deviceorientation", (e) => {
-    const beta = e.beta; // Наклон вперед-назад (в градусах)
-    const gamma = e.gamma; // Наклон влево-вправо (в градусах)
-    // Используем gamma для движения ракетки
-    const tilt = gamma / 45; // Нормализуем угол (-1 до 1)
-    paddleX = (canvas.width - paddleWidth) * (0.5 + tilt / 2); // Позиция от 0 до canvas.width - paddleWidth
-    if (paddleX < 0) paddleX = 0;
-    if (paddleX + paddleWidth > canvas.width) paddleX = canvas.width - paddleWidth;
+    if (useGyro) {
+        const gamma = e.gamma;
+        const tilt = gamma / 45;
+        paddleX = (canvas.width - paddleWidth) * (0.5 + tilt / 2);
+        if (paddleX < 0) paddleX = 0;
+        if (paddleX + paddleWidth > canvas.width) paddleX = canvas.width - paddleWidth;
+    }
+});
+
+// Переключение гироскопа
+amourToggle.addEventListener("click", () => {
+    useGyro = !useGyro;
+    amourToggle.textContent = useGyro ? "Амур: Гироскоп вкл" : "Амур: Только палец";
+    showMessage(useGyro ? "Амур включил гироскоп!" : "Амур оставил только палец!");
 });
 
 // Параллакс-эффект
@@ -162,53 +307,121 @@ document.addEventListener("mousemove", (e) => {
     const moveX = (e.clientX - window.innerWidth / 2) * 0.02;
     const moveY = (e.clientY - window.innerHeight / 2) * 0.02;
     parallaxBg.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    cloudsCanvas.style.transform = `translate(${moveX * 0.5}px, ${moveY * 0.5}px)`;
 });
 
-function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+// Показ сообщения
+function showMessage(text) {
+    messageBox.textContent = text;
+    messageBox.style.display = "block";
+    setTimeout(() => {
+        messageBox.style.display = "none";
+    }, 3000);
+}
 
-    // Рисуем фрактал и пламя
-    drawMandelbrot();
-    drawFlame();
-    time++;
-
-    // Шарик с отскоками
-    if (x + ballRadius > canvas.width) {
-        dx *= -0.98;
-        x = canvas.width - ballRadius;
-    }
-    if (x - ballRadius < 0) {
-        dx *= -0.98;
-        x = ballRadius;
-    }
-    if (y - ballRadius < 0) {
-        dy *= -0.98;
-        y = ballRadius;
-    }
-    if (y + ballRadius > canvas.height - paddleHeight) {
-        if (x > paddleX && x < paddleX + paddleWidth) {
-            dy *= -0.98;
-            y = canvas.height - paddleHeight - ballRadius;
-            dx += (x - (paddleX + paddleWidth / 2)) * 0.02;
-        } else if (y + ballRadius > canvas.height) {
-            x = canvas.width / 2;
-            y = 50;
-            dx = (Math.random() > 0.5 ? 1 : -1) * (4 + Math.random() * 4);
-            dy = 4 + Math.random() * 4;
+// Обновление жизней
+function updateLives() {
+    for (let i = 0; i < livesDisplay.length; i++) {
+        if (i < lives) {
+            livesDisplay[i].classList.remove("lost");
+        } else {
+            livesDisplay[i].classList.add("lost");
         }
     }
-    x += dx;
-    y += dy;
+}
 
-    // Рисуем ракетку
-    ctx.fillStyle = "#2c6e9d";
-    ctx.fillRect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+function draw() {
+    bufferCtx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Рисуем шарик
-    ctx.fillStyle = (y + ballRadius > canvas.height - paddleHeight && x > paddleX && x < paddleX + paddleWidth) ? "#ff6b6b" : "#ff0000";
-    ctx.beginPath();
-    ctx.arc(x, y, ballRadius, 0, 2 * Math.PI);
-    ctx.fill();
+    drawClouds();
+    drawParticles(bufferCtx);
+    time++;
+
+    gameTime += 1 / 60;
+    const minutes = Math.floor(gameTime / 60);
+    const seconds = Math.floor(gameTime % 60);
+    timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+    if (gameTime - lastMessageTime > 300) {
+        const messages = [
+            "Ты — моё валентиновое чудо!",
+            "Любовь в каждом отскоке!",
+            "Сердце бьётся для тебя!",
+            "С праздником, мой герой!"
+        ];
+        showMessage(messages[Math.floor(Math.random() * messages.length)]);
+        lastMessageTime = gameTime;
+    }
+
+    for (let i = 0; i < balls.length; i++) {
+        let ball = balls[i];
+        if (ball.x + ballRadius > canvas.width) {
+            ball.dx *= -0.99;
+            ball.x = canvas.width - ballRadius;
+        }
+        if (ball.x - ballRadius < 0) {
+            ball.dx *= -0.99;
+            ball.x = ballRadius;
+        }
+        if (ball.y - ballRadius < 0) {
+            ball.dy *= -0.99;
+            ball.y = ballRadius;
+        }
+        if (ball.y + ballRadius > canvas.height - paddleHeight) {
+            if (ball.x > paddleX && ball.x < paddleX + paddleWidth) {
+                ball.dy *= -0.99;
+                ball.y = canvas.height - paddleHeight - ballRadius;
+                ball.dx += (ball.x - (paddleX + paddleWidth / 2)) * 0.02;
+                score += 1;
+                scoreDisplay.textContent = score;
+
+                if (score === 50) {
+                    balls.forEach(b => { b.dx *= 1.2; b.dy *= 1.2; });
+                    showMessage("Любовь набирает обороты!");
+                } else if (score === 100 && balls.length === 1) {
+                    balls.push({ x: canvas.width / 2, y: 50, dx: (Math.random() > 0.5 ? 1 : -1) * 3, dy: 3 });
+                    showMessage("Два сердца в игре!");
+                }
+            } else if (ball.y + ballRadius > canvas.height) {
+                lives -= 1;
+                updateLives();
+                ball.x = canvas.width / 2;
+                ball.y = 50;
+                ball.dx = (Math.random() > 0.5 ? 1 : -1) * (2 + Math.random() * 2);
+                ball.dy = 2 + Math.random() * 2;
+
+                if (lives <= 0) {
+                    showMessage("Любовь угасла... Начнём заново?");
+                    setTimeout(() => {
+                        score = 0;
+                        lives = 5;
+                        gameTime = 0;
+                        balls = [{ x: canvas.width / 2, y: 50, dx: (Math.random() > 0.5 ? 1 : -1) * 3, dy: 3 }];
+                        scoreDisplay.textContent = score;
+                        updateLives();
+                    }, 3000);
+                }
+            }
+        }
+        ball.x += ball.dx;
+        ball.y += ball.dy;
+
+        bufferCtx.fillStyle = "#F06292";
+        bufferCtx.beginPath();
+        bufferCtx.moveTo(ball.x, ball.y);
+        bufferCtx.bezierCurveTo(ball.x - 25, ball.y - 25, ball.x - 25, ball.y + 15, ball.x, ball.y + 35);
+        bufferCtx.bezierCurveTo(ball.x + 25, ball.y + 15, ball.x + 25, ball.y - 25, ball.x, ball.y);
+        bufferCtx.fill();
+    }
+
+    bufferCtx.shadowBlur = 8;
+    bufferCtx.shadowColor = "#F06292";
+    bufferCtx.fillStyle = "#D32F2F";
+    bufferCtx.fillRect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+    bufferCtx.shadowBlur = 0;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(bufferCanvas, 0, 0);
 
     requestAnimationFrame(draw);
 }
@@ -217,7 +430,7 @@ function draw() {
 window.Telegram.WebApp.ready();
 window.Telegram.WebApp.expand();
 
-// Запрос разрешения на доступ к гироскопу (для iOS)
+// Запрос разрешения на гироскоп
 if (typeof DeviceOrientationEvent.requestPermission === 'function') {
     DeviceOrientationEvent.requestPermission()
         .then(permissionState => {
@@ -230,6 +443,7 @@ if (typeof DeviceOrientationEvent.requestPermission === 'function') {
         .catch(console.error);
 }
 
+updateLives();
 draw();
 </script>
 </body>
