@@ -8,7 +8,7 @@
             margin: 0;
             overflow: hidden;
             font-family: 'Georgia', serif;
-            color: #FFFFFF; /* Белый для верхней панели */
+            color: #FFFFFF;
             background: #FFCDD2;
         }
         #game {
@@ -69,7 +69,7 @@
         #bottom-bar {
             bottom: 0;
             height: 5vh;
-            color: #F06292; /* Пастельно-розовый для цитат */
+            color: #F06292;
         }
         #quote {
             opacity: 1;
@@ -135,6 +135,71 @@
         #decor-top-right { top: 2px; right: 2px; transform: translate(50%, -50%); }
         #decor-bottom-left { bottom: 2px; left: 2px; transform: translate(-50%, 50%); }
         #decor-bottom-right { bottom: 2px; right: 2px; transform: translate(50%, 50%); }
+        #sound-toggle, #music-toggle {
+            position: fixed;
+            bottom: calc(5vh + 10px);
+            z-index: 4;
+            width: 8vw;
+            height: 8vw;
+            max-width: 32px;
+            max-height: 32px;
+            border: none;
+            background-size: contain;
+            cursor: pointer;
+        }
+        #sound-toggle {
+            left: calc(50% - 10vw);
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23D32F2F"><path d="M20.5 7.5c0-3.9-3.6-7-8-7s-8 3.1-8 7c0 3.9 3.6 7 8 7s8-3.1 8-7zM12.5 14c-3.6 0-6.5-2.9-6.5-6.5S8.9 1 12.5 1s6.5 2.9 6.5 6.5S16.1 14 12.5 14z"/></svg>') no-repeat center;
+        }
+        #sound-toggle.off {
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23A9A9A9"><path d="M20.5 7.5c0-3.9-3.6-7-8-7s-8 3.1-8 7c0 3.9 3.6 7 8 7s8-3.1 8-7zM12.5 14c-3.6 0-6.5-2.9-6.5-6.5S8.9 1 12.5 1s6.5 2.9 6.5 6.5S16.1 14 12.5 14zM6 2l12 12"/></svg>') no-repeat center;
+        }
+        #music-toggle {
+            left: calc(50% + 2vw);
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23D32F2F"><path d="M9 19V6l12-3v13M9 6h-4v13h4M21 3l-6 13"/></svg>') no-repeat center;
+        }
+        #music-toggle.off {
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23A9A9A9"><path d="M9 19V6l12-3v13M9 6h-4v13h4M21 3l-6 13M6 2l12 12"/></svg>') no-repeat center;
+        }
+        #volume-control {
+            position: fixed;
+            bottom: calc(5vh + 10px);
+            left: calc(50% - 20vw);
+            width: 20vw;
+            max-width: 80px;
+            height: 8vw;
+            max-height: 32px;
+            z-index: 4;
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent;
+            cursor: pointer;
+        }
+        #volume-control::-webkit-slider-runnable-track {
+            height: 5px;
+            background: linear-gradient(to right, #F06292, #D32F2F);
+            border-radius: 5px;
+        }
+        #volume-control::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23D32F2F"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center;
+            background-size: contain;
+            margin-top: -5px;
+        }
+        #volume-control::-moz-range-track {
+            height: 5px;
+            background: linear-gradient(to right, #F06292, #D32F2F);
+            border-radius: 5px;
+        }
+        #volume-control::-moz-range-thumb {
+            width: 15px;
+            height: 15px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23D32F2F"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center;
+            background-size: contain;
+        }
     </style>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
@@ -142,7 +207,7 @@
 <div id="parallax-bg"></div>
 <canvas id="parallax-clouds" width="800" height="600"></canvas>
 <div id="top-bar">
-    Прикосновения: <span id="score">0</span>
+    Очки: <span id="score">0</span>
     <span id="lives">
         <span class="heart"></span>
         <span class="heart"></span>
@@ -155,6 +220,9 @@
 <div id="bottom-bar"><span id="quote"></span></div>
 <div id="message"></div>
 <button id="amour-toggle">Амур: Только палец</button>
+<button id="sound-toggle" title="Toggle Sound"></button>
+<button id="music-toggle" title="Toggle Music"></button>
+<input type="range" id="volume-control" min="0" max="100" value="10" title="Volume">
 <div id="decor-top-left"></div>
 <div id="decor-top-right"></div>
 <div id="decor-bottom-left"></div>
@@ -170,6 +238,9 @@ const livesDisplay = document.getElementById("lives").children;
 const quoteDisplay = document.getElementById("quote");
 const messageBox = document.getElementById("message");
 const amourToggle = document.getElementById("amour-toggle");
+const soundToggle = document.getElementById("sound-toggle");
+const musicToggle = document.getElementById("music-toggle");
+const volumeControl = document.getElementById("volume-control");
 
 // Адаптация канваса
 const dpr = window.devicePixelRatio || 1;
@@ -180,8 +251,45 @@ cloudsCanvas.width = window.innerWidth * dpr;
 cloudsCanvas.height = window.innerHeight * dpr;
 cloudsCtx.scale(dpr, dpr);
 
+// Звуки
+const bounceSound = new Audio('https://username.github.io/valentine-pong/assets/bounce.mp3'); // Замените на ваш URL
+bounceSound.volume = 0.2; // В два раза громче музыки по умолчанию
+const backgroundMusic = new Audio('https://username.github.io/valentine-pong/assets/background.mp3'); // Замените на ваш URL
+backgroundMusic.loop = true;
+backgroundMusic.volume = 0.1; // Тихая по умолчанию
+backgroundMusic.play();
+
+let soundEnabled = true;
+let musicEnabled = true;
+
+soundToggle.addEventListener("click", () => {
+    soundEnabled = !soundEnabled;
+    soundToggle.classList.toggle("off", !soundEnabled);
+});
+
+musicToggle.addEventListener("click", () => {
+    musicEnabled = !musicEnabled;
+    musicToggle.classList.toggle("off", !musicEnabled);
+    if (musicEnabled) {
+        backgroundMusic.play();
+    } else {
+        backgroundMusic.pause();
+    }
+});
+
+volumeControl.addEventListener("input", () => {
+    const volume = volumeControl.value / 100;
+    backgroundMusic.volume = volume;
+    if (volume > 0 && musicEnabled) {
+        backgroundMusic.play();
+    } else {
+        backgroundMusic.pause();
+    }
+});
+
 // Переменные для шарика
-let balls = [{ x: canvas.width / dpr / 2, y: 50, dx: (Math.random() > 0.5 ? 1 : -1) * 1.5, dy: 1.5 }];
+const initialSpeed = 1.0;
+let balls = [{ x: canvas.width / dpr / 2, y: 50, dx: (Math.random() > 0.5 ? 1 : -1) * initialSpeed, dy: initialSpeed }];
 let ballRadius = 30;
 
 // Переменные для ракетки
@@ -301,14 +409,6 @@ amourToggle.addEventListener("click", () => {
     showMessage(useGyro ? "Амур включил гироскоп!" : "Амур оставил только палец!");
 });
 
-// Параллакс-эффект
-document.addEventListener("mousemove", (e) => {
-    const moveX = (e.clientX - window.innerWidth / 2) * 0.02;
-    const moveY = (e.clientY - window.innerHeight / 2) * 0.02;
-    parallaxBg.style.transform = `translate(${moveX}px, ${moveY}px)`;
-    cloudsCanvas.style.transform = `translate(${moveX * 0.5}px, ${moveY * 0.5}px)`;
-});
-
 // Показ сообщения
 function showMessage(text) {
     messageBox.textContent = text;
@@ -392,7 +492,11 @@ function draw() {
                 score += 1;
                 scoreDisplay.textContent = score;
 
-                // Ускорение каждые 5 очков на 5%
+                if (soundEnabled) {
+                    bounceSound.currentTime = 0;
+                    bounceSound.play();
+                }
+
                 if (score % 5 === 0) {
                     balls.forEach(b => { 
                         b.dx *= 1.05; 
@@ -402,7 +506,7 @@ function draw() {
                 }
 
                 if (score === 100 && balls.length === 1) {
-                    balls.push({ x: canvas.width / dpr / 2, y: 50, dx: (Math.random() > 0.5 ? 1 : -1) * 1.5, dy: 1.5 });
+                    balls.push({ x: canvas.width / dpr / 2, y: 50, dx: (Math.random() > 0.5 ? 1 : -1) * initialSpeed, dy: initialSpeed });
                     showMessage("Два сердца в игре!");
                 }
             } else if (ball.y + ballRadius > canvas.height / dpr) {
@@ -410,8 +514,8 @@ function draw() {
                 updateLives();
                 ball.x = canvas.width / dpr / 2;
                 ball.y = 50;
-                ball.dx = (Math.random() > 0.5 ? 1 : -1) * 1.5;
-                ball.dy = 1.5;
+                ball.dx = (Math.random() > 0.5 ? 1 : -1) * initialSpeed;
+                ball.dy = initialSpeed;
 
                 if (lives <= 0) {
                     showMessage("Любовь угасла... Начнём заново?");
@@ -419,7 +523,7 @@ function draw() {
                         score = 0;
                         lives = 5;
                         gameTime = 0;
-                        balls = [{ x: canvas.width / dpr / 2, y: 50, dx: (Math.random() > 0.5 ? 1 : -1) * 1.5, dy: 1.5 }];
+                        balls = [{ x: canvas.width / dpr / 2, y: 50, dx: (Math.random() > 0.5 ? 1 : -1) * initialSpeed, dy: initialSpeed }];
                         scoreDisplay.textContent = score;
                         updateLives();
                     }, 3000);
@@ -452,15 +556,21 @@ window.Telegram.WebApp.expand();
 
 // Запрос разрешения на гироскоп
 if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-    DeviceOrientationEvent.requestPermission()
-        .then(permissionState => {
-            if (permissionState === 'granted') {
-                console.log("Гироскоп разрешён");
-            } else {
-                console.log("Гироскоп не разрешён");
-            }
-        })
-        .catch(console.error);
+    amourToggle.addEventListener("click", () => {
+        if (useGyro && !DeviceOrientationEvent.requestPermission.called) {
+            DeviceOrientationEvent.requestPermission()
+                .then(permissionState => {
+                    if (permissionState === 'granted') {
+                        console.log("Гироскоп разрешён");
+                    } else {
+                        console.log("Гироскоп не разрешён");
+                        useGyro = false;
+                        amourToggle.textContent = "Амур: Только палец";
+                    }
+                })
+                .catch(console.error);
+        }
+    }, { once: true });
 }
 
 updateLives();
