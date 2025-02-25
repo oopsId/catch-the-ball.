@@ -44,8 +44,8 @@ const parallaxBg = document.getElementById("parallax-bg");
 // Переменные для шарика
 let x = canvas.width / 2, y = 50;
 let ballRadius = 20;
-let dx = (Math.random() > 0.5 ? 1 : -1) * (4 + Math.random() * 4); // Ускоряем: 4–8
-let dy = 4 + Math.random() * 4; // Ускоряем: 4–8
+let dx = (Math.random() > 0.5 ? 1 : -1) * (4 + Math.random() * 4);
+let dy = 4 + Math.random() * 4;
 
 // Переменные для ракетки
 let paddleWidth = 80;
@@ -127,7 +127,7 @@ function drawFlame() {
     }
 }
 
-// Управление ракеткой
+// Управление ракеткой через мышь
 canvas.addEventListener("mousemove", (e) => {
     const rect = canvas.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
@@ -136,11 +136,23 @@ canvas.addEventListener("mousemove", (e) => {
     if (paddleX + paddleWidth > canvas.width) paddleX = canvas.width - paddleWidth;
 });
 
+// Управление ракеткой через сенсор
 canvas.addEventListener("touchmove", (e) => {
     e.preventDefault();
     const rect = canvas.getBoundingClientRect();
     const touchX = e.touches[0].clientX - rect.left;
     paddleX = touchX - paddleWidth / 2;
+    if (paddleX < 0) paddleX = 0;
+    if (paddleX + paddleWidth > canvas.width) paddleX = canvas.width - paddleWidth;
+});
+
+// Управление ракеткой через гироскоп
+window.addEventListener("deviceorientation", (e) => {
+    const beta = e.beta; // Наклон вперед-назад (в градусах)
+    const gamma = e.gamma; // Наклон влево-вправо (в градусах)
+    // Используем gamma для движения ракетки
+    const tilt = gamma / 45; // Нормализуем угол (-1 до 1)
+    paddleX = (canvas.width - paddleWidth) * (0.5 + tilt / 2); // Позиция от 0 до canvas.width - paddleWidth
     if (paddleX < 0) paddleX = 0;
     if (paddleX + paddleWidth > canvas.width) paddleX = canvas.width - paddleWidth;
 });
@@ -162,7 +174,7 @@ function draw() {
 
     // Шарик с отскоками
     if (x + ballRadius > canvas.width) {
-        dx *= -0.98; // Меньше затухания
+        dx *= -0.98;
         x = canvas.width - ballRadius;
     }
     if (x - ballRadius < 0) {
@@ -181,7 +193,7 @@ function draw() {
         } else if (y + ballRadius > canvas.height) {
             x = canvas.width / 2;
             y = 50;
-            dx = (Math.random() > 0.5 ? 1 : -1) * (4 + Math.random() * 4); // Сброс с новой скоростью
+            dx = (Math.random() > 0.5 ? 1 : -1) * (4 + Math.random() * 4);
             dy = 4 + Math.random() * 4;
         }
     }
@@ -204,6 +216,19 @@ function draw() {
 // Инициализация Telegram Web App
 window.Telegram.WebApp.ready();
 window.Telegram.WebApp.expand();
+
+// Запрос разрешения на доступ к гироскопу (для iOS)
+if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+    DeviceOrientationEvent.requestPermission()
+        .then(permissionState => {
+            if (permissionState === 'granted') {
+                console.log("Гироскоп разрешён");
+            } else {
+                console.log("Гироскоп не разрешён");
+            }
+        })
+        .catch(console.error);
+}
 
 draw();
 </script>
