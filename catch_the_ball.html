@@ -189,19 +189,19 @@
 #sound-toggle {
     position: fixed;
     bottom: calc(5vh + 10px);
-    left: calc(50% - 10vw); /* Равное расстояние от центра */
+    left: calc(50% - 10vw); /* Центр остаётся на месте */
     width: 8vw;
     height: 8vw;
     max-width: 32px;
     max-height: 32px;
     border: none;
-    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23D32F2F"><path d="M12 2C8.13 2 5 5.13 5 9c0 1.74.5 3.37 1.41 4.84L12 22l5.59-8.16C18.5 12.37 19 10.74 19 9c0-3.87-3.13-7-7-7zm0 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>') no-repeat center; /* Колокольчик */
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23D32F2F"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 1.5-.5 2.9-1.4 4.1M18 10c1.1 0 2-.9 2-2s-.9-2-2-2"/></svg>') no-repeat center; /* Сердечко с волной */
     background-size: contain;
     cursor: pointer;
     z-index: 4;
 }
 #sound-toggle.off {
-    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23A9A9A9"><path d="M12 2C8.13 2 5 5.13 5 9c0 1.74.5 3.37 1.41 4.84L12 22l5.59-8.16C18.5 12.37 19 10.74 19 9c0-3.87-3.13-7-7-7zm0 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm-6-9l12 12"/></svg>') no-repeat center;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23A9A9A9"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 1.5-.5 2.9-1.4 4.1M18 10c1.1 0 2-.9 2-2s-.9-2-2-2M6 2l12 12"/></svg>') no-repeat center; /* Сердечко с перечёркнутой волной */
 }
 #music-toggle {
     position: fixed;
