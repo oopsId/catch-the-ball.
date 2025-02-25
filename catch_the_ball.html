@@ -8,7 +8,7 @@
             margin: 0;
             overflow: hidden;
             font-family: 'Georgia', serif;
-            color: #FFFFFF; /* Белый цвет текста */
+            color: #FFFFFF; /* Белый для верхней панели */
             background: #FFCDD2;
         }
         #game {
@@ -41,7 +41,7 @@
         }
         #parallax-clouds {
             position: fixed;
-            top: 0; /* На весь фон */
+            top: 0;
             left: 0;
             width: 100%;
             height: 100%;
@@ -58,18 +58,18 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            text-shadow: 0 0 2px #F06292;
             box-shadow: 0 1px 5px rgba(240, 98, 146, 0.2);
             font-size: 4vw;
-            color: #FFFFFF; /* Белый цвет текста */
         }
         #top-bar {
             top: 0;
             height: 5vh;
+            text-shadow: 0 0 2px #F06292;
         }
         #bottom-bar {
             bottom: 0;
             height: 5vh;
+            color: #F06292; /* Пастельно-розовый для цитат */
         }
         #quote {
             opacity: 1;
@@ -92,7 +92,7 @@
         }
         .heart {
             display: inline-block;
-            width: 7vw; /* Увеличенный размер */
+            width: 7vw;
             height: 7vw;
             max-width: 28px;
             max-height: 28px;
@@ -142,7 +142,7 @@
 <div id="parallax-bg"></div>
 <canvas id="parallax-clouds" width="800" height="600"></canvas>
 <div id="top-bar">
-    Очки: <span id="score">0</span>
+    Прикосновения: <span id="score">0</span>
     <span id="lives">
         <span class="heart"></span>
         <span class="heart"></span>
@@ -253,12 +253,12 @@ let cloudOffset = 0;
 function drawClouds() {
     cloudsCtx.clearRect(0, 0, cloudsCanvas.width, cloudsCanvas.height);
 
-    cloudsCtx.fillStyle = "#FFFFFF"; // Белый цвет
-    for (let i = 0; i < 4; i++) { // Меньше облаков для простоты
+    cloudsCtx.fillStyle = "#FFFFFF";
+    for (let i = 0; i < 4; i++) {
         const x = (i * 300 + cloudOffset) % (cloudsCanvas.width / dpr);
-        const y = 100 + (i % 3) * 100; // Разброс по высоте
+        const y = 100 + (i % 3) * 100;
         cloudsCtx.beginPath();
-        cloudsCtx.arc(x, y, 40, 0, 2 * Math.PI); // Крупнее
+        cloudsCtx.arc(x, y, 40, 0, 2 * Math.PI);
         cloudsCtx.arc(x + 30, y - 15, 30, 0, 2 * Math.PI);
         cloudsCtx.arc(x + 60, y, 35, 0, 2 * Math.PI);
         cloudsCtx.fill();
@@ -392,10 +392,16 @@ function draw() {
                 score += 1;
                 scoreDisplay.textContent = score;
 
-                if (score === 50) {
-                    balls.forEach(b => { b.dx *= 1.2; b.dy *= 1.2; });
-                    showMessage("Любовь набирает обороты!");
-                } else if (score === 100 && balls.length === 1) {
+                // Ускорение каждые 5 очков на 5%
+                if (score % 5 === 0) {
+                    balls.forEach(b => { 
+                        b.dx *= 1.05; 
+                        b.dy *= 1.05; 
+                    });
+                    showMessage(`Сердце бьётся быстрее (+${score / 5 * 5}%)!`);
+                }
+
+                if (score === 100 && balls.length === 1) {
                     balls.push({ x: canvas.width / dpr / 2, y: 50, dx: (Math.random() > 0.5 ? 1 : -1) * 1.5, dy: 1.5 });
                     showMessage("Два сердца в игре!");
                 }
