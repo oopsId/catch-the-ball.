@@ -618,8 +618,10 @@ async function trackGameLaunch() {
     };
     localStorage.setItem('launchCount', launchData.launchCount);
 
+    console.log('Отправляем данные:', launchData); // Отладка: проверяем, доходит ли сюда
+
     try {
-        const response = await fetch('http://89.107.10.21:11000/track', { // Замените на ваш IP
+        const response = await fetch('http://89.107.10.21:11000/track', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -627,13 +629,16 @@ async function trackGameLaunch() {
             body: JSON.stringify(launchData)
         });
 
-        if (!response.ok) throw new Error('Не удалось отправить данные');
+        if (!response.ok) {
+            throw new Error(`Ошибка HTTP: ${response.status}`);
+        }
         console.log('Запуск записан:', launchData);
     } catch (err) {
-        console.error('Ошибка отправки:', err);
+        console.error('Ошибка отправки:', err.message);
     }
 }
-// Запускаем отслеживание при старте игры
+
+// Запускаем  при старте игры
 trackGameLaunch();
 //до здесь
 updateLives();
