@@ -592,11 +592,50 @@ if (typeof DeviceOrientationEvent.requestPermission === 'function') {
         }
     }, { once: true });
 }
-// тут пишем код
+// тут пишем код трек
+// Функция генерации UUID
+function generateUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
 
+// Получение или создание userId
+let userId = localStorage.getItem('userId');
+if (!userId) {
+    userId = generateUUID();
+    localStorage.setItem('userId', userId);
+}
 
+// Функция для отправки данных
+async function trackGameLaunch() {
+    const launchData = {
+        userId: userId,
+        timestamp: new Date().toISOString(),
+        score: score,
+        launchCount: (parseInt(localStorage.getItem('launchCount')) || 0) + 1
+    };
+    localStorage.setItem('launchCount', launchData.launchCount);
 
+    try {
+        const response = await fetch('http://89.107.10.21:11000/track', { // Замените на ваш IP
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(launchData)
+        });
 
+        if (!response.ok) throw new Error('Не удалось отправить данные');
+        console.log('Запуск записан:', launchData);
+    } catch (err) {
+        console.error('Ошибка отправки:', err);
+    }
+}
+// Запускаем отслеживание при старте игры
+trackGameLaunch();
+//до здесь
 updateLives();
 draw();
 </script>
