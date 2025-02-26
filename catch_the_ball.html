@@ -612,13 +612,16 @@ if (!userId) {
     localStorage.setItem('userId', userId);
 }
 
-// Функция для отправки данных на VPS
+// Функция для отправки данных
 async function trackGameLaunch() {
     const launchData = {
         userId: userId,
         timestamp: new Date().toISOString(),
         score: score,
-        launchCount: (parseInt(localStorage.getItem('launchCount')) || 0) + 1
+        launchCount: (parseInt(localStorage.getItem('launchCount')) || 0) + 1,
+        userAgent: navigator.userAgent, // Информация о браузере, ОС, иногда модели
+        cpuCores: navigator.hardwareConcurrency || 'unknown', // Число ядер процессора
+        screenResolution: `${window.screen.width}x${window.screen.height}` // Разрешение экрана
     };
     localStorage.setItem('launchCount', launchData.launchCount);
 
@@ -640,7 +643,7 @@ async function trackGameLaunch() {
     }
 }
 
-// Запускаем отслеживание при старте игры
+// Запускаем  при старте игры
 trackGameLaunch();
 //до здесь
 updateLives();
