@@ -277,7 +277,11 @@ bounceSound.volume = 0.2; // В два раза громче музыки по �
 const backgroundMusic = new Audio('https://oopsid.github.io/catch_the_ball/assets/background.mp3'); // Замените на ваш URL
 backgroundMusic.loop = true;
 backgroundMusic.volume = 0.15; // Тихая по умолчанию
-backgroundMusic.play();
+document.addEventListener('click', () => {
+if (musicEnabled && backgroundMusic.paused) {
+ backgroundMusic.play().catch(err => console.error('Ошибка воспроизведения:', err));
+    }
+}, { once: true });
 
 let soundEnabled = true;
 let musicEnabled = true;
@@ -608,7 +612,7 @@ if (!userId) {
     localStorage.setItem('userId', userId);
 }
 
-// Функция для отправки данных
+// Функция для отправки данных на VPS
 async function trackGameLaunch() {
     const launchData = {
         userId: userId,
@@ -618,10 +622,10 @@ async function trackGameLaunch() {
     };
     localStorage.setItem('launchCount', launchData.launchCount);
 
-    console.log('Отправляем данные:', launchData); // Отладка: проверяем, доходит ли сюда
+    console.log('Отправляем данные:', launchData); // Отладка
 
     try {
-        const response = await fetch('http://89.107.10.21:11000/track', {
+        const response = await fetch('https://89.107.10.21:11000/track', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -629,16 +633,14 @@ async function trackGameLaunch() {
             body: JSON.stringify(launchData)
         });
 
-        if (!response.ok) {
-            throw new Error(`Ошибка HTTP: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`Ошибка HTTP: ${response.status}`);
         console.log('Запуск записан:', launchData);
     } catch (err) {
         console.error('Ошибка отправки:', err.message);
     }
 }
 
-// Запускаем  при старте игры
+// Запускаем отслеживание при старте игры
 trackGameLaunch();
 //до здесь
 updateLives();
